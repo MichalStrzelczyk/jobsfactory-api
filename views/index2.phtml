@@ -1,0 +1,193 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Allocator.it</title>
+    <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css"
+          integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
+
+    <link rel="stylesheet"
+          href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.0.0/animate.min.css"
+    />
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+
+
+    <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js"
+            integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo"
+            crossorigin="anonymous"></script>
+
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js"
+            integrity="sha384-wfSDF2E50Y2D1uUdj0O3uMBJnjuUD4Ih7YwaYd1iqfktj0Uod8GCExl3Og8ifwB6"
+            crossorigin="anonymous"></script>
+
+    <link rel="stylesheet" href="assets/css/main.css"/>
+</head>
+<body>
+<section id="menu" class="bg-dark-blue">
+    <div class="container">
+        <div class="row pt-4 pb-4">
+            <div class="col">
+                <a href="/" class="logo">Allocator.It</a>
+            </div>
+        </div>
+    </div>
+</section>
+
+<section id="header" class="bg-header">
+    <div class="container">
+        <div class="row pt-4 pb-4">
+            <div class="col">
+                <h1 class="pb-3 pt-3">Wszystkie ogłoszenia IT w jednym miejscu</h1>
+                <div class="row">
+                    <div class="col">
+                        <p class="white-transparent">Szukanie pracy nigdy nie było takie proste.</p>
+                    </div>
+                    <div class="col">
+                        <span>Ogłoszeń:</span>
+                        <span id="counter-4" class="badge cta counter animate__animated animate__tada">0</span>
+                        <span id="counter-3" class="badge cta counter animate__animated animate__tada">0</span>
+                        <span id="counter-2" class="badge cta counter animate__animated animate__tada">0</span>
+                        <span id="counter-1" class="badge cta counter animate__animated animate__tada">0</span>
+                        <span id="counter-0" class="badge cta counter animate__animated animate__tada">0</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="row pt-4 pb-4">
+            <div class="col-9">
+                <input id="searchWord" class="form-control form-control-lg" type="text" placeholder="wpisz słow kluczowe np. PHP, Warszawa">
+            </div>
+            <div class="col-3">
+                <button id="searchBtn" type="submit" class="btn cta btn-lg">Szukaj ogłoszeń</button>
+            </div>
+        </div>
+    </div>
+    <span>
+        <div class="svg-border-rounded text-white">
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 144.54 17.34" preserveAspectRatio="none"
+                 fill="currentColor">
+                <path d="M144.54,17.34H0V0H144.54ZM0,0S32.36,17.34,72.27,17.34,144.54,0,144.54,0"></path></svg>
+        </div>
+    </span>
+</section>
+
+<section id="content" class="container mb-4"></section>
+<footer class="bg-gray p-5">
+    <div class="container">
+        <div class="row">
+            <div class="col">
+                <h4 class="text-color-header">Allocator.It</h4>
+                Wszystkie ogłoszenia IT w jednym miejscu
+            </div>
+            <div class="col">
+                <h5>MIASTO</h5>
+                <ul>
+                    <li><a href="/">Warszawa</a></li>
+                    <li><a href="/">Kraków</a></li>
+                    <li><a href="/">Wrocław</a></li>
+                    <li><a href="/">Łódź</a></li>
+                </ul>
+            </div>
+            <div class="col">
+                <ul>
+                    <li><a href="/">Rzeszów</a></li>
+                    <li><a href="/">Gdańsk</a></li>
+                    <li><a href="/">Poznań</a></li>
+                    <li><a href="/">Białystok</a></li>
+                </ul>
+            </div>
+            <div class="col">
+                <h5>DOŚWIADCZENIE</h5>
+                <ul>
+                    <li><a href="/">Staż/Praktyki</a></li>
+                    <li><a href="/">Junior</a></li>
+                    <li><a href="/">Mid</a></li>
+                    <li><a href="/">Senior</a></li>
+                    <li><a href="/">Expert</a></li>
+                </ul>
+            </div>
+            <div class="col">
+                <h5>RODZAJ KONTRAKTU</h5>
+                <ul>
+                    <li><a href="/">Umowa tymczsowa</a></li>
+                    <li><a href="/">B2B</a></li>
+                    <li><a href="/">umowa o pracę</a></li>
+                </ul>
+            </div>
+        </div>
+        <hr/>
+        <div class="row">
+            <div class="col small text-left">Copyright © DigitalFarm 2020</div>
+            <div class="col small text-right">Polityka prywatności ·Regulamin</div>
+        </div>
+    </div>
+</footer>
+
+<script>
+    $(function(){
+        $('#searchBtn').click(function(){
+            $.ajax({
+               'url': '/api-gateway',
+                dataType: "json",
+                data: {
+                   limit: 500,
+                    q: $('#searchWord').val()
+                },
+                success: function(response){
+                    $('#content').html('');
+                    for(index in response.data ){
+
+                        offer = response.data[index];
+                        $('#content').append('    <div class="row p-3 mt-3 shadow">\n' +
+                            '        <div class="col-9">\n' +
+                            '        <a href="" >'+offer.position+'</a> <br />\n' +
+                            '            '+offer.companyName +' ('+ offer.companyCity+')\n' +
+                            '        </div>\n' +
+                            '        <div class="col-2"><span class="badge cta">$</span>\n' +
+                            '            '+ offer.minEarnings+'-'+ offer.maxEarnings+'PLN \n' +
+                            '        </div>\n' +
+                            '        <div class="col-1"><img class="portalLogo" src="/assets/img/'+ offer.sourcePortal+'.jpg" alt="'+ offer.sourcePortal+'" />\n' +
+                            '        </div>\n' +
+                            '    </div>');
+                    }
+                }
+            });
+
+
+            return false;
+        })
+    })
+
+
+
+
+    var offersCount = 12524;
+    $(function () {
+        var $counter0 = $('#counter-0');
+        var $counter1 = $('#counter-1');
+        var $counter2 = $('#counter-2');
+        var $counter3 = $('#counter-3');
+        var $counter4 = $('#counter-4');
+
+        function animate(i) {
+            setTimeout(function () {
+
+                n = i.toString();
+                $counter0.html(n.substring(4, 5));
+                $counter1.html(n.substring(3, 4));
+                $counter2.html(n.substring(2, 3));
+                $counter3.html(n.substring(1, 2));
+                $counter4.html(n.substring(0, 1));
+
+                if (i < offersCount) {
+                    animate(++i);
+                }
+            }, 1);
+        }
+
+        animate(offersCount * 0.95);
+    });
+</script>
+</body>
+</html>

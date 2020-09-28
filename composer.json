@@ -1,0 +1,13 @@
+{
+    "autoload": {
+        "psr-4": {
+            "DigitalFarm\\": "src/"
+        }
+    },
+    "require-dev": {
+        "phalcon/devtools": "^4.0"
+    },
+    "require": {
+        "elasticsearch/elasticsearch": "^7.9"
+    }
+}
