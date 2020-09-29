@@ -11,6 +11,8 @@ class QueryBuilder
 
     protected array $params = [];
 
+    protected int $counter = 0;
+
     /**
      * Manager constructor.
      * @param \Elasticsearch\Client $client
@@ -22,7 +24,7 @@ class QueryBuilder
 
     public function whereInRange(string $key, ?int $min = 0, ?int $max = null): self
     {
-        $this->params['body']['query']['bool']['filter']['range'][$key] = [
+        $this->params['body']['query']['bool']['must']['range'][$key] = [
             'gte' => $min,
             'lte' => $max
         ];
@@ -55,6 +57,7 @@ class QueryBuilder
 
     public function whereIn(string $key, array $values): self
     {
+        $this->counter++;
 
         $this->params['body']['query']['bool']['should'] = $this->params['body']['query']['bool']['should'] ?? [];
         foreach ($values as $value) {
@@ -65,13 +68,14 @@ class QueryBuilder
             ];
         }
 
-        $this->params['body']['query']['bool']['minimum_should_match'] = 1;
+        $this->params['body']['query']['bool']['minimum_should_match'] = $this->counter;
 
         return $this;
     }
 
     public function whereWord(string $search): self
     {
+        $this->counter++;
         $this->params['body']['query']['bool']['should'] = [
             [
                 'query_string' => [
@@ -109,7 +113,7 @@ class QueryBuilder
             ]
         ];
 
-        $this->params['body']['query']['bool']['minimum_should_match'] = 1;
+        $this->params['body']['query']['bool']['minimum_should_match'] = $this->counter;
 
         return $this;
     }
@@ -117,6 +121,7 @@ class QueryBuilder
     public function where(string $key, string $value): self
     {
 
+        $this->counter++;
         $this->params['body']['query']['bool']['must'] = $this->params['body']['query']['bool']['must'] ?? [];
 
         $this->params['body']['query']['bool']['must'][] = [
@@ -125,7 +130,7 @@ class QueryBuilder
             ]
         ];
 
-        $this->params['body']['query']['bool']['minimum_should_match'] = 1;
+        $this->params['body']['query']['bool']['minimum_should_match'] = $this->counter;
 
         return $this;
     }
