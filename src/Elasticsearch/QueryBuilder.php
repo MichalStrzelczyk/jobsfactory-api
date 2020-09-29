@@ -65,6 +65,8 @@ class QueryBuilder
             ];
         }
 
+        $this->params['body']['query']['bool']['minimum_should_match'] = 1;
+
         return $this;
     }
 
@@ -107,6 +109,7 @@ class QueryBuilder
             ]
         ];
 
+        $this->params['body']['query']['bool']['minimum_should_match'] = 1;
 
         return $this;
     }
@@ -121,6 +124,8 @@ class QueryBuilder
                 $key => $value
             ]
         ];
+
+        $this->params['body']['query']['bool']['minimum_should_match'] = 1;
 
         return $this;
     }

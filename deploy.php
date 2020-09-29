@@ -7,7 +7,7 @@ require 'recipe/common.php';
 set('application', 'jobsfactory.pl');
 
 // Project repository
-set('repository', 'git@github.com:MichalStrzelczyk/jobsfactory-web.git');
+set('repository', 'git@github.com:MichalStrzelczyk/jobsfactory-api.git');
 
 // [Optional] Allocate tty for git clone. Default value is false.
 set('git_tty', true); 
