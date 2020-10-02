@@ -59,6 +59,7 @@ $app->get('/', function () use ($app) {
 
     $queryBuilder->whereInRange('maxEarnings', $salaryMin, $salaryMax);
     $queryBuilder->offset($offset);
+    $queryBuilder->order('minEarnings','DESC');
     $queryBuilder->limit($limit);
 
     $data = $queryBuilder->search();
