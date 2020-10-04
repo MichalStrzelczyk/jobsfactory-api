@@ -76,12 +76,12 @@ class QueryBuilder
     public function whereWord(string $search): self
     {
         $this->counter++;
-        $this->params['body']['query']['bool']['must'] = [
+        $this->params['body']['query']['bool']['should'] = [
             [
                 'query_string' => [
                     'default_field' => 'textSearch',
                     'query' => '*' . $search . '*',
-                    'boost'=> '1.0',
+                    'boost'=> '2.0',
                     'fuzziness' => 3
                 ]
             ]
