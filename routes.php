@@ -18,14 +18,10 @@ $app->get('/status', function () use ($app) {
 
 $app->get('/', function () use ($app) {
 
-    // Validation
-//    if ($this->request->isAjax()) {
-//
-//    }
-
     /** @var \DigitalFarm\Elasticsearch\QueryBuilder $queryBuilder */
     $queryBuilder = $app->getDI()->get('queryBuilder');
 
+    $id = $app->request->get('id', 'int', null);
     $limit = (int)$app->request->get('limit', 'int', 20);
     $offset = (int)$app->request->get('offset', 'int', 0);
 
@@ -34,8 +30,8 @@ $app->get('/', function () use ($app) {
     $contractTypes = $app->request->get('contractTypes') ?? [];
     $seniorityList = $app->request->get('seniorityList') ?? [];
     $technologies = $app->request->get('technologies') ?? [];
-    $salaryMax = (int)$app->request->get('salaryMax', 'int', 999999);
-    $salaryMin = (int)$app->request->get('salaryMin', 'int', 0);
+    $salaryMax = $app->request->get('salaryMax', 'int', null);
+    $salaryMin = $app->request->get('salaryMin', 'int', null);
 
     if (!empty($cities)) {
         $queryBuilder->whereIn('companyCity', $cities);
@@ -57,14 +53,25 @@ $app->get('/', function () use ($app) {
         $queryBuilder->whereWord($word);
     }
 
-    $queryBuilder->whereInRange('maxEarnings', $salaryMin, $salaryMax);
+    if (!\is_null($id)){
+        $queryBuilder->where('id', (int) $id);
+    }
+
+    if (!\is_null($salaryMin)){
+        $queryBuilder->whereGte('minEarnings', (int) $salaryMin);
+    }
+
+    if (!\is_null($salaryMax)){
+        $queryBuilder->whereLte('maxEarnings', (int) $salaryMax);
+    }
+
     $queryBuilder->offset($offset);
-    $queryBuilder->order('minEarnings','DESC');
+    $queryBuilder->order('minEarnings', 'DESC');
     $queryBuilder->limit($limit);
 
     $data = $queryBuilder->search();
 
-    \array_walk($data['hits']['hits'], function($value, $key) use ($data){
+    \array_walk($data['hits']['hits'], function ($value, $key) use ($data) {
         $data['hits']['hits'][$key] = $value['_source'];
     }, ARRAY_FILTER_USE_BOTH);
 

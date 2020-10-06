@@ -32,6 +32,24 @@ class QueryBuilder
         return $this;
     }
 
+    public function whereGte(string $key, int $limit): self
+    {
+        $this->params['body']['query']['bool']['must']['range'][$key] = [
+            'gte' => $limit,
+        ];
+
+        return $this;
+    }
+
+    public function whereLte(string $key, int $limit): self
+    {
+        $this->params['body']['query']['bool']['must']['range'][$key] = [
+            'lte' => $limit,
+        ];
+
+        return $this;
+    }
+
     public function offset(int $limit): self
     {
 
