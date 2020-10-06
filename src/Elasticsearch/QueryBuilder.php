@@ -112,17 +112,11 @@ class QueryBuilder
 
     public function where(string $key, string $value): self
     {
-
-        $this->counter++;
-        $this->params['body']['query']['bool']['must'] = $this->params['body']['query']['bool']['must'] ?? [];
-
-        $this->params['body']['query']['bool']['must'][] = [
+        $this->params['body']['query']['bool']['must'] = [
             'match' => [
                 $key => $value
             ]
         ];
-
-        $this->params['body']['query']['bool']['minimum_should_match'] = $this->counter;
 
         return $this;
     }
