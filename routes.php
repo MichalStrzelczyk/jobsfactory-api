@@ -66,7 +66,7 @@ $app->get('/', function () use ($app) {
     }
 
     $queryBuilder->offset($offset);
-    $queryBuilder->order('minEarnings', 'DESC');
+    $queryBuilder->order('id', 'DESC');
     $queryBuilder->limit($limit);
 
     $data = $queryBuilder->search();
