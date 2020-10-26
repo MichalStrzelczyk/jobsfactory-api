@@ -25,16 +25,29 @@ $app->get('/', function () use ($app) {
     $limit = (int)$app->request->get('limit', 'int', 20);
     $offset = (int)$app->request->get('offset', 'int', 0);
 
+    $orderBy = $app->request->get('orderBy', 'string', 'id');
+    $orderType = $app->request->get('orderType', 'string', 'DESC');
+
+    if (!\in_array($orderType, ['ASC','DESC'])) {
+        $orderType = 'DESC';
+    }
+
+    $onlyWithSalary = (int) $app->request->get('onlyWithSalary', 'int', 0);
     $word = $app->request->get('q', 'string');
     $cities = $app->request->get('cities') ?? [];
     $contractTypes = $app->request->get('contractTypes') ?? [];
     $seniorityList = $app->request->get('seniorityList') ?? [];
     $technologies = $app->request->get('technologies') ?? [];
+    $categories = $app->request->get('categories') ?? [];
     $salaryMax = $app->request->get('salaryMax', 'int', null);
     $salaryMin = $app->request->get('salaryMin', 'int', null);
 
     if (!empty($cities)) {
         $queryBuilder->whereIn('companyCity', $cities);
+    }
+
+    if (!empty($categories)) {
+        $queryBuilder->whereIn('category', $categories);
     }
 
     if (!empty($technologies)) {
@@ -65,8 +78,12 @@ $app->get('/', function () use ($app) {
         $queryBuilder->whereLte('maxEarnings', (int) $salaryMax);
     }
 
+    if ($onlyWithSalary === 1 && \is_null($salaryMin)){
+        $queryBuilder->whereGte('minEarnings', 0);
+    }
+
     $queryBuilder->offset($offset);
-    $queryBuilder->order('id', 'DESC');
+    $queryBuilder->order($orderBy, $orderType);
     $queryBuilder->limit($limit);
 
     $data = $queryBuilder->search();
