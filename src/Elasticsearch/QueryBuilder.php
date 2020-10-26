@@ -60,7 +60,7 @@ class QueryBuilder
 
     public function order(string $columnName, string $orderType = 'ASC'): self
     {
-        $this->params['sort'] = [$columnName . ':' . $orderType];
+        $this->params['sort'] = [$columnName . ':' . \mb_strtolower($orderType)];
 
         return $this;
     }
