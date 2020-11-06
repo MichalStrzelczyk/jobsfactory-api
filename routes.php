@@ -34,7 +34,7 @@ $app->get('/', function () use ($app) {
 
     $onlyWithSalary = (int) $app->request->get('onlyWithSalary', 'int', 0);
     $word = $app->request->get('q', 'string');
-    $country = $app->request->get('q', 'country');
+    $country = $app->request->get('country', 'string');
     $cities = $app->request->get('cities') ?? [];
     $contractTypes = $app->request->get('contractTypes') ?? [];
     $seniorityList = $app->request->get('seniorityList') ?? [];
