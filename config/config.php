@@ -2,6 +2,13 @@
 
 return new \Phalcon\Config(
     [
+        'database' => [
+            'adapter' => 'Postgresql',
+            'host' => '172.16.0.2',
+            'username' => 'postgres',
+            'password' => 'Mamma1.2',
+            'dbname' => 'it-offers'
+        ],
         'elasticsearch' => [
             'host' => '172.16.0.5',
             'port' => 9200
