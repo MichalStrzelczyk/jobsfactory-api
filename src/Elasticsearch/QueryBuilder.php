@@ -112,8 +112,8 @@ class QueryBuilder
 
     public function where(string $key, string $value): self
     {
-        $this->params['body']['query']['bool']['must'] = [
-            'match' => [
+        $this->params['body']['query']['bool']['filter'] = [
+            'term' => [
                 $key => $value
             ]
         ];
