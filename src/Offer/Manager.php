@@ -64,7 +64,7 @@ class Manager
         }
 
         if (!\is_null($id)) {
-            $queryBuilder->where('id', (int)$id);
+            $queryBuilder->where('id', (string)$id);
         }
 
         if (!\is_null($country)) {
