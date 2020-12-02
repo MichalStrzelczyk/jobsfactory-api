@@ -64,6 +64,7 @@ try {
     $filename = date('Y-m-d').'.log';
     \file_put_contents(BASE_PATH.'/log/'.$filename, $data.PHP_EOL, FILE_APPEND);
 
+    http_response_code(500);
     header('Content-Type: application/json');
     echo json_encode(['error'=>$errorId]);
 }
