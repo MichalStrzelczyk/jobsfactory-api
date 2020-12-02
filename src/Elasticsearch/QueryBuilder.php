@@ -123,19 +123,8 @@ class QueryBuilder
 
     public function search(): array
     {
-        $this->params['scroll'] = '1s';
         $this->params['index'] = $this->findActiveIndex();
-
-        $response = $this->client->search($this->params);
-        while (isset($response['hits']['hits']) && count($response['hits']['hits']) > 0) {
-            $scrollId = $response['_scroll_id'];
-            $response = $this->client->scroll([
-                'body' => [
-                    'scroll_id' => $scrollId,
-                    'scroll'    => '1s'
-                ]
-            ]);
-        }
+        $response =  $this->client->search($this->params);
 
         return $response;
     }

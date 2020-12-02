@@ -24,6 +24,7 @@ class Manager
 
         return [
             'urlImage' => $adv->getImageUrl(),
+            'urlMobileImage' => $adv->getImageMobileUrl(),
             'actionLink' => $adv->getActionLink()
         ];
     }

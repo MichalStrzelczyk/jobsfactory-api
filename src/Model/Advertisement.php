@@ -36,6 +36,13 @@ class Advertisement extends \Phalcon\Mvc\Model
 
     /**
      *
+     * @var string
+     * @Column(column="imageMobileUrl", type="string", nullable=false)
+     */
+    protected $imageMobileUrl;
+
+    /**
+     *
      * @var integer
      * @Column(column="imageViews", type="integer", nullable=true)
      */
@@ -124,6 +131,19 @@ class Advertisement extends \Phalcon\Mvc\Model
     public function setImageUrl($imageUrl)
     {
         $this->imageUrl = $imageUrl;
+
+        return $this;
+    }
+
+    /**
+     * Method to set the value of field imageUrl
+     *
+     * @param string $imageUrl
+     * @return $this
+     */
+    public function setImageMobileUrl($imageUrl)
+    {
+        $this->imageMobileUrl = $imageUrl;
 
         return $this;
     }
@@ -244,6 +264,16 @@ class Advertisement extends \Phalcon\Mvc\Model
     public function getImageUrl()
     {
         return $this->imageUrl;
+    }
+
+    /**
+     * Returns the value of field imageUrl
+     *
+     * @return string
+     */
+    public function getImageMobileUrl()
+    {
+        return $this->imageMobileUrl;
     }
 
     /**
