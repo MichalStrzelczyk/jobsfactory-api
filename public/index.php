@@ -49,16 +49,21 @@ try {
     $errorId = \uniqid('err_');
     $data =  \json_encode([
         'errorId' => $errorId,
+        'datetime' => date('Y-m-d H:i:s'),
         'message' => $e->getMessage(),
         'line' => $e->getLine(),
         'file' => $e->getFile(),
         'code' => $e->getCode(),
-        'trace' => $e->getTraceAsString()
+        'trace' => $e->getTraceAsString(),
+        'post' => $_POST,
+        'get' => $_GET,
+        'server' => $_SERVER,
+
     ], JSON_PRETTY_PRINT);
 
-    \file_put_contents(BASE_PATH.'/app.log', $data.PHP_EOL, FILE_APPEND);
+    $filename = date('Y-m-d').'.log';
+    \file_put_contents(BASE_PATH.'/log/'.$filename, $data.PHP_EOL, FILE_APPEND);
 
-    http_response_code(500);
     header('Content-Type: application/json');
     echo json_encode(['error'=>$errorId]);
 }
