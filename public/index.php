@@ -46,6 +46,19 @@ try {
      */
     $app->handle($_SERVER['REQUEST_URI']);
 } catch (\Exception $e) {
-      echo $e->getMessage() . '<br>';
-      echo '<pre>' . $e->getTraceAsString() . '</pre>';
+    $errorId = \uniqid('err_');
+    $data =  \json_encode([
+        'errorId' => $errorId,
+        'message' => $e->getMessage(),
+        'line' => $e->getLine(),
+        'file' => $e->getFile(),
+        'code' => $e->getCode(),
+        'trace' => $e->getTraceAsString()
+    ], JSON_PRETTY_PRINT);
+
+    \file_put_contents(BASE_PATH.'/app.log', $data.PHP_EOL, FILE_APPEND);
+
+    http_response_code(500);
+    header('Content-Type: application/json');
+    echo json_encode(['error'=>$errorId]);
 }
