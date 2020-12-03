@@ -72,11 +72,11 @@ class Manager
         }
 
         if (!\is_null($salaryMin)) {
-            $queryBuilder->whereGte('minEarnings', (int)$salaryMin);
+            $queryBuilder->whereGte('minEarningsInPLN', (int)$salaryMin);
         }
 
         if (!\is_null($salaryMax)) {
-            $queryBuilder->whereLte('maxEarnings', (int)$salaryMax);
+            $queryBuilder->whereLte('maxEarningsInPLN', (int)$salaryMax);
         }
 
         if ($onlyWithSalary === 1 && \is_null($salaryMin)) {
